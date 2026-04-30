@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Octogecko — hanazawa-y</title>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "../vendor/three/build/three.module.js"
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <header class="page-header">
+        <a href="../">← hanazawa-y</a>
+    </header>
+
+    <div id="stage">
+        <canvas id="view"></canvas>
+        <p id="loading" class="loading">Loading…</p>
+    </div>
+
+    <script type="module">
+        const loadingEl = document.getElementById("loading");
+        import("./main.js").catch((e) => {
+            if (loadingEl) {
+                loadingEl.textContent =
+                    "スクリプトの読み込みに失敗しました。vendor/three がリポジトリにあるか、コンソールのエラーを確認してください: " +
+                    (e && e.message ? e.message : String(e));
+                loadingEl.classList.remove("hidden");
+            }
+        });
+    </script>
+</body>
+
+</html>
