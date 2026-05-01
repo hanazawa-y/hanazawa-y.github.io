@@ -21,20 +21,38 @@ function resolveModelUrl() {
 
 	const q = params.get("model");
 
+	const scriptBase =
+		import.meta.url;
+
 	if (!q) {
-		return "../013_Octogecko_Art.glb";
+
+		return new URL(
+			"../Monster.glb",
+			scriptBase
+		).href;
 	}
 
-	if (
-		q.startsWith("/") ||
-		q.includes("://")
-	) {
+	if (q.includes("://")) {
 		return q;
 	}
 
-	return q.startsWith("../")
-		? q
-		: `../${q}`;
+	if (q.startsWith("/")) {
+
+		return new URL(
+			q,
+			window.location.href
+		).href;
+	}
+
+	const relative =
+		q.startsWith("../")
+			? q
+			: `../${q}`;
+
+	return new URL(
+		relative,
+		scriptBase
+	).href;
 }
 
 
