@@ -1,24 +1,17 @@
-import "./monster.css";
-
 import * as THREE from "three";
 
 import {
 	OrbitControls
-} from "three/addons/controls/OrbitControls.js";
+} from "../vendor/three/examples/jsm/controls/OrbitControls.js";
 
 import {
 	GLTFLoader
-} from "three/addons/loaders/GLTFLoader.js";
+} from "../vendor/three/examples/jsm/loaders/GLTFLoader.js";
 
 
-function siteBaseUrl() {
-
-	return new URL(
-		import.meta.env.BASE_URL,
-		window.location.origin
-	);
-}
-
+// =========================
+// Model URL
+// =========================
 
 function resolveModelUrl() {
 
@@ -28,14 +21,14 @@ function resolveModelUrl() {
 
 	const q = params.get("model");
 
-	const base =
-		siteBaseUrl();
+	const scriptBase =
+		import.meta.url;
 
 	if (!q) {
 
 		return new URL(
-			"monster/monster.glb",
-			base
+			"../Monster.glb",
+			scriptBase
 		).href;
 	}
 
@@ -46,17 +39,26 @@ function resolveModelUrl() {
 	if (q.startsWith("/")) {
 
 		return new URL(
-			q.slice(1),
-			window.location.origin
+			q,
+			window.location.href
 		).href;
 	}
 
+	const relative =
+		q.startsWith("../")
+			? q
+			: `../${q}`;
+
 	return new URL(
-		q,
-		base
+		relative,
+		scriptBase
 	).href;
 }
 
+
+// =========================
+// Camera Framing
+// =========================
 
 function frameModel(
 	camera,
@@ -142,7 +144,15 @@ function frameModel(
 }
 
 
+// =========================
+// Boot
+// =========================
+
 function boot() {
+
+	// =========================
+	// DOM
+	// =========================
 
 	const canvas =
 		document.getElementById("view");
@@ -156,6 +166,10 @@ function boot() {
 	const modelUrl =
 		resolveModelUrl();
 
+
+	// =========================
+	// file:// check
+	// =========================
 
 	if (
 		window.location.protocol === "file:"
@@ -171,6 +185,10 @@ function boot() {
 		return;
 	}
 
+
+	// =========================
+	// Renderer
+	// =========================
 
 	const renderer =
 		new THREE.WebGLRenderer({
@@ -203,11 +221,19 @@ function boot() {
 	}
 
 
+	// =========================
+	// Scene
+	// =========================
+
 	const scene = new THREE.Scene();
 
 	scene.background =
 		new THREE.Color(0x0c1222);
 
+
+	// =========================
+	// Camera
+	// =========================
 
 	const camera =
 		new THREE.PerspectiveCamera(
@@ -217,6 +243,10 @@ function boot() {
 			1000000
 		);
 
+
+	// =========================
+	// Controls
+	// =========================
 
 	const controls =
 		new OrbitControls(
@@ -232,6 +262,10 @@ function boot() {
 
 	controls.maxDistance = 10000000;
 
+
+	// =========================
+	// Lights
+	// =========================
 
 	const ambientLight =
 		new THREE.AmbientLight(
@@ -270,6 +304,10 @@ function boot() {
 	scene.add(rimLight);
 
 
+	// =========================
+	// Resize
+	// =========================
+
 	function resize() {
 
 		const width = Math.max(
@@ -301,6 +339,10 @@ function boot() {
 	);
 
 
+	// =========================
+	// Loader
+	// =========================
+
 	const loader =
 		new GLTFLoader();
 
@@ -331,6 +373,7 @@ function boot() {
 
 		modelUrl,
 
+		// success
 		(gltf) => {
 
 			try {
@@ -379,8 +422,10 @@ function boot() {
 			}
 		},
 
+		// progress
 		undefined,
 
+		// error
 		(err) => {
 
 			console.error(err);
@@ -391,6 +436,10 @@ function boot() {
 		}
 	);
 
+
+	// =========================
+	// Animation Loop
+	// =========================
 
 	const clock =
 		new THREE.Clock();
@@ -415,6 +464,10 @@ function boot() {
 	tick();
 }
 
+
+// =========================
+// Start
+// =========================
 
 if (
 	document.readyState === "loading"
