@@ -2,30 +2,41 @@
 <html lang="ja">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Octogecko — hanazawa-y</title>
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "../vendor/three/build/three.module.js"
-            }
-        }
-    </script>
-    <link rel="stylesheet" href="./style.css">
+
+	<meta charset="UTF-8">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>
+		Octogecko — hanazawa-y
+	</title>
+
+	<script type="importmap" src="./importmap.json"></script>
+
+	<link rel="stylesheet" href="./style.css">
+
+	<script type="module" src="./main.js"></script>
+
 </head>
 
 <body>
-    <header class="page-header">
-        <a href="../">← hanazawa-y</a>
-    </header>
 
-    <div id="stage">
-        <canvas id="view"></canvas>
-        <p id="loading" class="loading">Loading…</p>
-    </div>
+	<header class="page-header">
+		<a href="../">
+			← hanazawa-y
+		</a>
+	</header>
 
-    <script type="module" src="./main.js"></script>
+	<div id="stage">
+
+		<canvas id="view"></canvas>
+
+		<p id="loading" class="loading">
+			Loading…
+		</p>
+
+	</div>
+
 </body>
 
 </html>

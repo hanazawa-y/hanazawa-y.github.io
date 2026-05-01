@@ -1,308 +1,466 @@
 import * as THREE from "three";
-import { OrbitControls } from "../vendor/three/examples/jsm/controls/OrbitControls.js";
-import { GLTFLoader } from "../vendor/three/examples/jsm/loaders/GLTFLoader.js";
+
+import {
+	OrbitControls
+} from "../vendor/three/examples/jsm/controls/OrbitControls.js";
+
+import {
+	GLTFLoader
+} from "../vendor/three/examples/jsm/loaders/GLTFLoader.js";
+
+
+// =========================
+// Model URL
+// =========================
 
 function resolveModelUrl() {
-    const params = new URLSearchParams(window.location.search);
-    const q = params.get("model");
 
-    if (!q) {
-        return "../013_Octogecko_Art.glb";
-    }
+	const params = new URLSearchParams(
+		window.location.search
+	);
 
-    if (q.startsWith("/") || q.includes("://")) {
-        return q;
-    }
+	const q = params.get("model");
 
-    return q.startsWith("../") ? q : `../${q}`;
+	if (!q) {
+		return "../013_Octogecko_Art.glb";
+	}
+
+	if (
+		q.startsWith("/") ||
+		q.includes("://")
+	) {
+		return q;
+	}
+
+	return q.startsWith("../")
+		? q
+		: `../${q}`;
 }
 
-function frameModel(camera, controls, object, padding = 1.35) {
-    const box = new THREE.Box3().setFromObject(object);
 
-    if (box.isEmpty()) {
-        camera.position.set(2, 1.6, 4);
+// =========================
+// Camera Framing
+// =========================
 
-        camera.near = 0.01;
-        camera.far = 100;
+function frameModel(
+	camera,
+	controls,
+	object,
+	padding = 1.35
+) {
 
-        camera.updateProjectionMatrix();
+	const box = new THREE.Box3()
+		.setFromObject(object);
 
-        camera.lookAt(0, 0.8, 0);
+	if (box.isEmpty()) {
 
-        controls.target.set(0, 0.8, 0);
-        controls.update();
+		camera.position.set(
+			2,
+			1.6,
+			4
+		);
 
-        return;
-    }
+		camera.near = 0.01;
+		camera.far = 100;
 
-    const sphere = box.getBoundingSphere(new THREE.Sphere());
+		camera.updateProjectionMatrix();
 
-    const center = sphere.center;
-    const radius = Math.max(sphere.radius, 1e-6);
+		camera.lookAt(
+			0,
+			0.8,
+			0
+		);
 
-    const vFov = (camera.fov * Math.PI) / 180;
+		controls.target.set(
+			0,
+			0.8,
+			0
+		);
 
-    const dist = (radius / Math.sin(vFov / 2)) * padding;
+		controls.update();
 
-    camera.position.set(
-        center.x + dist * 0.35,
-        center.y + dist * 0.25,
-        center.z + dist
-    );
+		return;
+	}
 
-    camera.near = Math.max(dist / 200, 0.001);
-    camera.far = Math.min(dist * 200, 1e7);
+	const sphere = box.getBoundingSphere(
+		new THREE.Sphere()
+	);
 
-    camera.updateProjectionMatrix();
+	const center = sphere.center;
 
-    camera.lookAt(center);
+	const radius = Math.max(
+		sphere.radius,
+		1e-6
+	);
 
-    controls.target.copy(center);
-    controls.update();
+	const vFov =
+		(camera.fov * Math.PI) / 180;
+
+	const dist =
+		(radius / Math.sin(vFov / 2))
+		* padding;
+
+	camera.position.set(
+		center.x + dist * 0.35,
+		center.y + dist * 0.25,
+		center.z + dist
+	);
+
+	camera.near = Math.max(
+		dist / 200,
+		0.001
+	);
+
+	camera.far = Math.min(
+		dist * 200,
+		1e7
+	);
+
+	camera.updateProjectionMatrix();
+
+	camera.lookAt(center);
+
+	controls.target.copy(center);
+
+	controls.update();
 }
+
+
+// =========================
+// Boot
+// =========================
 
 function boot() {
 
-    // =========================
-    // DOM
-    // =========================
+	// =========================
+	// DOM
+	// =========================
 
-    const canvas = document.getElementById("view");
-    const stage = document.getElementById("stage");
-    const loadingEl = document.getElementById("loading");
+	const canvas =
+		document.getElementById("view");
 
-    const modelUrl = resolveModelUrl();
+	const stage =
+		document.getElementById("stage");
 
-    // =========================
-    // file:// 対策
-    // =========================
+	const loadingEl =
+		document.getElementById("loading");
 
-    if (window.location.protocol === "file:") {
+	const modelUrl =
+		resolveModelUrl();
 
-        loadingEl.textContent =
-            "file:// では動作しません。httpサーバー経由で開いてください。";
 
-        loadingEl.classList.remove("hidden");
+	// =========================
+	// file:// check
+	// =========================
 
-        return;
-    }
+	if (
+		window.location.protocol === "file:"
+	) {
 
-    // =========================
-    // Renderer
-    // =========================
+		loadingEl.textContent =
+			"file:// では動作しません。HTTPサーバー経由で開いてください。";
 
-    const renderer = new THREE.WebGLRenderer({
-        canvas,
-        antialias: true,
-        alpha: true
-    });
+		loadingEl.classList.remove(
+			"hidden"
+		);
 
-    renderer.setPixelRatio(
-        Math.min(window.devicePixelRatio || 1, 2)
-    );
+		return;
+	}
 
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1;
 
-    if ("outputColorSpace" in renderer && THREE.SRGBColorSpace) {
-        renderer.outputColorSpace = THREE.SRGBColorSpace;
-    }
+	// =========================
+	// Renderer
+	// =========================
 
-    // =========================
-    // Scene
-    // =========================
+	const renderer =
+		new THREE.WebGLRenderer({
 
-    const scene = new THREE.Scene();
+			canvas,
+			antialias: true,
+			alpha: true
 
-    scene.background = new THREE.Color(0x0c1222);
+		});
 
-    // =========================
-    // Camera
-    // =========================
+	renderer.setPixelRatio(
+		Math.min(
+			window.devicePixelRatio || 1,
+			2
+		)
+	);
 
-    const camera = new THREE.PerspectiveCamera(
-        42,
-        1,
-        0.01,
-        1000000
-    );
+	renderer.toneMapping =
+		THREE.ACESFilmicToneMapping;
 
-    // =========================
-    // Controls
-    // =========================
+	renderer.toneMappingExposure = 1;
 
-    const controls = new OrbitControls(camera, canvas);
+	if (
+		"outputColorSpace" in renderer &&
+		THREE.SRGBColorSpace
+	) {
 
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.08;
+		renderer.outputColorSpace =
+			THREE.SRGBColorSpace;
+	}
 
-    controls.minDistance = 0.01;
-    controls.maxDistance = 10000000;
 
-    // =========================
-    // Light
-    // =========================
+	// =========================
+	// Scene
+	// =========================
 
-    const ambientLight = new THREE.AmbientLight(
-        0xffffff,
-        0.55
-    );
+	const scene = new THREE.Scene();
 
-    scene.add(ambientLight);
+	scene.background =
+		new THREE.Color(0x0c1222);
 
-    const keyLight = new THREE.DirectionalLight(
-        0xffffff,
-        1.2
-    );
 
-    keyLight.position.set(4, 8, 6);
+	// =========================
+	// Camera
+	// =========================
 
-    scene.add(keyLight);
+	const camera =
+		new THREE.PerspectiveCamera(
+			42,
+			1,
+			0.01,
+			1000000
+		);
 
-    const rimLight = new THREE.DirectionalLight(
-        0xb8c7ff,
-        0.45
-    );
 
-    rimLight.position.set(-6, 2, -4);
+	// =========================
+	// Controls
+	// =========================
 
-    scene.add(rimLight);
+	const controls =
+		new OrbitControls(
+			camera,
+			canvas
+		);
 
-    // =========================
-    // Resize
-    // =========================
+	controls.enableDamping = true;
 
-    function resize() {
+	controls.dampingFactor = 0.08;
 
-        const width = Math.max(1, stage.clientWidth);
+	controls.minDistance = 0.01;
 
-        const height = Math.max(
-            320,
-            Math.round(width * 0.72)
-        );
+	controls.maxDistance = 10000000;
 
-        renderer.setSize(width, height);
 
-        camera.aspect = width / height;
+	// =========================
+	// Lights
+	// =========================
 
-        camera.updateProjectionMatrix();
-    }
+	const ambientLight =
+		new THREE.AmbientLight(
+			0xffffff,
+			0.55
+		);
 
-    resize();
+	scene.add(ambientLight);
 
-    window.addEventListener("resize", resize);
+	const keyLight =
+		new THREE.DirectionalLight(
+			0xffffff,
+			1.2
+		);
 
-    // =========================
-    // Loader
-    // =========================
+	keyLight.position.set(
+		4,
+		8,
+		6
+	);
 
-    const loader = new GLTFLoader();
+	scene.add(keyLight);
 
-    let mixer = null;
+	const rimLight =
+		new THREE.DirectionalLight(
+			0xb8c7ff,
+			0.45
+		);
 
-    function hideLoading() {
-        loadingEl.classList.add("hidden");
-    }
+	rimLight.position.set(
+		-6,
+		2,
+		-4
+	);
 
-    function showError(message) {
+	scene.add(rimLight);
 
-        console.error(message);
 
-        loadingEl.textContent = message;
+	// =========================
+	// Resize
+	// =========================
 
-        loadingEl.classList.remove("hidden");
-    }
+	function resize() {
 
-    loader.load(
+		const width = Math.max(
+			1,
+			stage.clientWidth
+		);
 
-        modelUrl,
+		const height = Math.max(
+			320,
+			Math.round(width * 0.72)
+		);
 
-        // success
-        (gltf) => {
+		renderer.setSize(
+			width,
+			height
+		);
 
-            try {
+		camera.aspect =
+			width / height;
 
-                const model = gltf.scene;
+		camera.updateProjectionMatrix();
+	}
 
-                scene.add(model);
+	resize();
 
-                frameModel(
-                    camera,
-                    controls,
-                    model
-                );
+	window.addEventListener(
+		"resize",
+		resize
+	);
 
-                // animation
-                if (gltf.animations?.length) {
 
-                    mixer = new THREE.AnimationMixer(model);
+	// =========================
+	// Loader
+	// =========================
 
-                    const clip = gltf.animations[0];
+	const loader =
+		new GLTFLoader();
 
-                    const action = mixer.clipAction(clip);
+	let mixer = null;
 
-                    action.loop = THREE.LoopRepeat;
 
-                    action.reset().play();
-                }
+	function hideLoading() {
 
-                hideLoading();
+		loadingEl.classList.add(
+			"hidden"
+		);
+	}
 
-            } catch (e) {
+	function showError(message) {
 
-                console.error(e);
+		console.error(message);
 
-                showError(
-                    `表示エラー: ${e?.message || e}`
-                );
-            }
-        },
+		loadingEl.textContent =
+			message;
 
-        // progress
-        undefined,
+		loadingEl.classList.remove(
+			"hidden"
+		);
+	}
 
-        // error
-        (err) => {
 
-            console.error(err);
+	loader.load(
 
-            showError(
-                `モデルを読み込めませんでした: ${modelUrl}`
-            );
-        }
-    );
+		modelUrl,
 
-    // =========================
-    // Animation Loop
-    // =========================
+		// success
+		(gltf) => {
 
-    const clock = new THREE.Clock();
+			try {
 
-    function tick() {
+				const model =
+					gltf.scene;
 
-        requestAnimationFrame(tick);
+				scene.add(model);
 
-        const delta = clock.getDelta();
+				frameModel(
+					camera,
+					controls,
+					model
+				);
 
-        controls.update();
+				if (
+					gltf.animations?.length
+				) {
 
-        mixer?.update(delta);
+					mixer =
+						new THREE.AnimationMixer(
+							model
+						);
 
-        renderer.render(scene, camera);
-    }
+					const clip =
+						gltf.animations[0];
 
-    tick();
+					const action =
+						mixer.clipAction(clip);
+
+					action.loop =
+						THREE.LoopRepeat;
+
+					action.reset().play();
+				}
+
+				hideLoading();
+
+			} catch (e) {
+
+				console.error(e);
+
+				showError(
+					`表示エラー: ${e?.message || e}`
+				);
+			}
+		},
+
+		// progress
+		undefined,
+
+		// error
+		(err) => {
+
+			console.error(err);
+
+			showError(
+				`モデルを読み込めませんでした: ${modelUrl}`
+			);
+		}
+	);
+
+
+	// =========================
+	// Animation Loop
+	// =========================
+
+	const clock =
+		new THREE.Clock();
+
+	function tick() {
+
+		requestAnimationFrame(tick);
+
+		const delta =
+			clock.getDelta();
+
+		controls.update();
+
+		mixer?.update(delta);
+
+		renderer.render(
+			scene,
+			camera
+		);
+	}
+
+	tick();
 }
 
-if (document.readyState === "loading") {
 
-    document.addEventListener(
-        "DOMContentLoaded",
-        boot
-    );
+// =========================
+// Start
+// =========================
+
+if (
+	document.readyState === "loading"
+) {
+
+	document.addEventListener(
+		"DOMContentLoaded",
+		boot
+	);
 
 } else {
 
-    boot();
+	boot();
 }
