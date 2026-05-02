@@ -111,6 +111,8 @@ document.getElementById('btn4').addEventListener('click', async () => {
 document.getElementById('btn5').addEventListener('click', loadData5);
 
 function loadData5() {
+	
+	console.log('btn5 clicked');
 
     fetch('https://jsonplaceholder.typicode.com/todos/1')
         .then(response => response.json())
@@ -138,6 +140,8 @@ document.getElementById('btn6').addEventListener('click', loadData6);
 
 async function loadData6() {
 
+	console.log('btn6 clicked');
+	
     try {
 
         const response = await fetch(
