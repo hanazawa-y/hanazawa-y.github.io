@@ -24,7 +24,8 @@
 | `btn8` | ⑧ async + axios | `async` + `await axios.get` + `try/catch` |
 | `btn9` | ⑨ innerHTML + async + axios | `axios` で TODO を複数件取得し、`innerHTML` で `<ul>` 一覧表示 |
 | `btn10` | ⑩ createElement + async + axios | 同じく複数件取得し、`createElement` / `appendChild` で `<ul>` を組み立てる |
-| `btn11` | ⑪ 入力 + async + axios | 入力欄の値を `todos/{id}` の `{id}` にして `axios.get`（数字 ID のみ） |
+| `btn11` | ⑪ 入力 + async + axios | 入力欄の値を `todos/{id}` の `{id}` にして `axios.get`（数字 ID のみ）。通信中は入力 `readOnly`・ボタン `disabled` |
+| `uiStateDemo` | ⑫ 状態の切り替え（`select`） | ⑪と同じ `#todoIdInput` / `#btn11` に対し、`readonly` / `disabled` / なしを切り替えて挙動を比較 |
 
 ## API
 
@@ -40,7 +41,8 @@
 ```html
 <label for="todoIdInput"><code>todos/</code></label>
 <input type="text" id="todoIdInput" inputmode="numeric" placeholder="例: 5" autocomplete="off" maxlength="10">
-<button id="btn11">⑪ 入力 + async + axios</button>
+<button type="button" id="btn11">⑪ 入力 + async + axios</button>
+<!-- 直下に ⑫ の <select id="uiStateDemo"> で readonly / disabled を切り替え -->
 ```
 
 ### `label` の `for` は何のためか
@@ -72,6 +74,56 @@
 
 - **`placeholder="例: 5"`**: 未入力時の薄いヒント文言。**ラベルの代替にはならない**（アクセシビリティ上は `label` が本体）。
 - **`maxlength="10"`**: 入力できる文字数の上限。極端に長い文字列を貼られないようにするための軽いガード。
+
+## ⑫ `disabled` / `readonly` / `:active` / なし（なにがちがうか）
+
+このページでは **HTML 属性の「無効・読み取り専用」** と **CSS の「押しているあいだ」** を次のように使い分けています。
+
+### なし（通常）
+
+- **`readonly` も `disabled` も付けない**状態。入力も⑪ボタンも普通に使える。
+- ⑫の `<select>` の「なし（どちらも通常）」がこれに相当（`applyStudyRow11ChromeState` で属性をいったん外す）。
+
+### `readonly`（入力）
+
+- **値は見えるがユーザーが編集できない**（フォーカスは当たることが多い）。フォーム送信がある場合は **フィールドは送られる**（`disabled` とは違う）。
+- ⑪の **通信中** は「内容は変えさせたくないが、グレーアウトで完全無効に見せすぎない」用途で、入力に **`readOnly = true`** を一時的に付ける（`disabled` にはしない）。終わったら⑫で選んだモードに **`finally` で復帰**する。
+
+### `disabled`（入力またはボタン）
+
+- **操作できない**。見た目もブラウザ既定で薄くなりがち。
+- **入力が `disabled` のとき**は⑪は実行しない（`#result` に説明を出す）。**⑪ボタンだけ `disabled`** のときも同様。
+- `disabled` の入力は、フォームでは **送られない**（このデモは GET のみなので実害は小さいが、意味の違いは覚えておくとよい）。
+
+### `:active`（CSS）
+
+- **「いまポインタで押している瞬間」** の見た目。HTML 属性ではなく **擬似クラス**（`#btn11:active`）。
+- **`#btn11:active:not(:disabled)`** とし、**無効なボタンでは `:active` のスタイルを当てない**ようにしている（押せないのに沈んで見えるのを避ける）。
+
+### ⑪と⑫の連携
+
+- ⑫で「入力 readonly」「入力 disabled」「⑪ボタンだけ disabled」「両方ロック」を選ぶと、**⑪の API 呼び出しができるか／入力できるか**が変わるので手で試せる。
+- ⑪実行中は **二重送信防止** のため `loadData11InFlight` フラグを立て、入力 **readonly**・**ボタン disabled**。完了後は **⑫の選択どおり** に `applyStudyRow11ChromeState()` で戻す。
+
+## `<button>` の `type`（基本は書いておく）
+
+### 省略するとどうなるか
+
+- `<button>` に **`type` を書かないと、既定は `submit`**（送信ボタンとして扱われる）。
+- **`<form>` の内側**にあると、クリックや（条件によっては）Enter で **フォーム送信** が走る。見た目は「閉じる」「もっと読む」でも、実際は送信になる、という事故が起きやすい。
+
+### 基本的なおすすめ
+
+- **クリックで JS だけ動かしたいボタン**（このページの①〜⑪など）は **`type="button"` を明示**する。
+  - いまフォームで包んでいなくても、**あとから `<form>` で囲んでも壊れにくい**。
+  - 「送信ではない」ことが読み手にもブラウザにもはっきりする。
+- **フォームを送りたい**ときは **`type="submit"`** を付ける（チームによっては「送信だ」と分かるよう **`submit` も省略せず書く**運用もよくある）。
+- **`type="reset"`** はフォームを初期状態に戻す用。用途が限定的で、通常の UI ではあまり使わない。
+
+### `<input>` の話（対比）
+
+- `<input>` は **`type` で役割が決まる**（`checkbox`、`radio`、`hidden`、`email` など）。
+- **`type` を省略した `<input>` は `text` 相当**として扱われる。
 
 ## `defer` とスクリプトの順序（`study.html` コメントより）
 

@@ -328,9 +328,57 @@ async function loadData10() {
 
 
 // ⑪ 入力値を todos/{id} に載せて GET（async + axios）
+// ⑫ で readonly / disabled / なし を切り替え。通信中は一時的に入力 readonly・ボタン disabled。
 const todoIdInput = document.getElementById('todoIdInput');
+const btn11 = document.getElementById('btn11');
+const uiStateDemo = document.getElementById('uiStateDemo');
 
-document.getElementById('btn11').addEventListener('click', loadData11);
+let loadData11InFlight = false;
+
+function applyStudyRow11ChromeState() {
+
+    if (!uiStateDemo) {
+
+        return;
+
+    }
+
+    const mode = uiStateDemo.value;
+
+    todoIdInput.readOnly = false;
+    todoIdInput.disabled = false;
+    btn11.disabled = false;
+
+    switch (mode) {
+
+        case 'input-readonly':
+            todoIdInput.readOnly = true;
+            break;
+
+        case 'input-disabled':
+            todoIdInput.disabled = true;
+            break;
+
+        case 'button-disabled':
+            btn11.disabled = true;
+            break;
+
+        case 'both-lock':
+            todoIdInput.readOnly = true;
+            btn11.disabled = true;
+            break;
+
+        case 'none':
+        default:
+            break;
+
+    }
+
+}
+
+uiStateDemo.addEventListener('change', applyStudyRow11ChromeState);
+
+btn11.addEventListener('click', loadData11);
 
 todoIdInput.addEventListener('keydown', function(event) {
 
@@ -343,6 +391,22 @@ todoIdInput.addEventListener('keydown', function(event) {
 });
 
 async function loadData11() {
+
+    if (loadData11InFlight) {
+
+        return;
+
+    }
+
+    if (todoIdInput.disabled || btn11.disabled) {
+
+        result.textContent =
+            '⑪ 入力 + async + axios\n\n' +
+            'いまは入力または⑪ボタンが無効なので実行できません（⑫の状態を変えてください）';
+
+        return;
+
+    }
 
     const raw = todoIdInput.value.trim();
 
@@ -369,6 +433,11 @@ async function loadData11() {
     const url =
         'https://jsonplaceholder.typicode.com/todos/' + raw;
 
+    loadData11InFlight = true;
+    todoIdInput.disabled = false;
+    todoIdInput.readOnly = true;
+    btn11.disabled = true;
+
     try {
 
         const response = await axios.get(url);
@@ -388,6 +457,11 @@ async function loadData11() {
             '⑪ 入力 + async + axios\n' +
             'GET ' + url + '\n\n' +
             'エラー: ' + error.message;
+
+    } finally {
+
+        loadData11InFlight = false;
+        applyStudyRow11ChromeState();
 
     }
 

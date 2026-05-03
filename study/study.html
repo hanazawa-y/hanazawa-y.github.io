@@ -26,7 +26,18 @@
     <div class="study-row11">
         <label for="todoIdInput"><code>todos/</code></label>
         <input type="text" id="todoIdInput" inputmode="numeric" placeholder="例: 5" autocomplete="off" maxlength="10">
-        <button id="btn11">⑪ 入力 + async + axios</button>
+        <button type="button" id="btn11">⑪ 入力 + async + axios</button>
+    </div>
+
+    <div class="study-row12">
+        <label for="uiStateDemo">⑫ 上の入力・⑪ボタンの状態</label>
+        <select id="uiStateDemo">
+            <option value="none">なし（どちらも通常）</option>
+            <option value="input-readonly">入力だけ readonly</option>
+            <option value="input-disabled">入力だけ disabled</option>
+            <option value="button-disabled">⑪ボタンだけ disabled</option>
+            <option value="both-lock">入力 readonly + ⑪ disabled（通信中イメージ）</option>
+        </select>
     </div>
 
 	<hr>
