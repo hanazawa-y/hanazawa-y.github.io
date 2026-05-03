@@ -24,12 +24,54 @@
 | `btn8` | ⑧ async + axios | `async` + `await axios.get` + `try/catch` |
 | `btn9` | ⑨ innerHTML + async + axios | `axios` で TODO を複数件取得し、`innerHTML` で `<ul>` 一覧表示 |
 | `btn10` | ⑩ createElement + async + axios | 同じく複数件取得し、`createElement` / `appendChild` で `<ul>` を組み立てる |
+| `btn11` | ⑪ 入力 + async + axios | 入力欄の値を `todos/{id}` の `{id}` にして `axios.get`（数字 ID のみ） |
 
 ## API
 
 - デモ用: [JSONPlaceholder](https://jsonplaceholder.typicode.com/)
 - ①〜⑧: `GET /todos/1`（1件）
 - ⑨〜⑩: `GET /todos?_limit=10`（最大10件）
+- ⑪: `GET /todos/{入力した数字}`（例: `GET /todos/5`）
+
+## ⑪の入力まわり（`study.html` のラベル〜入力〜ボタン）
+
+該当はおおむね次の形です。
+
+```html
+<label for="todoIdInput"><code>todos/</code></label>
+<input type="text" id="todoIdInput" inputmode="numeric" placeholder="例: 5" autocomplete="off" maxlength="10">
+<button id="btn11">⑪ 入力 + async + axios</button>
+```
+
+### `label` の `for` は何のためか
+
+- **`for` は「このラベルがどの入力欄を説明しているか」をブラウザに伝える属性**です。値には、対象にしたいフォームコントロールの **`id` と同じ文字列** を書きます。
+- ここでは `<input id="todoIdInput" ...>` があるので、`<label for="todoIdInput">` と対応づいています。
+- **効果の代表例**
+  - **クリック領域の拡大**: ユーザーがラベル（このページでは `todos/` の文字側）をクリック／タップすると、**対応する入力欄にフォーカスが移る**。細い入力ボックスだけを狙わなくてよくなる。
+  - **アクセシビリティ**: スクリーンリーダーなどが「この入力は何のためか」をラベルと関連付けて読み上げやすくなる（ネイティブのラベル関連付け）。
+- `for` を付けずに `<label>` で入力を **内側で包む** 書き方でも関連付けはできますが、このページでは **`id` + `for` で明示**している形です。
+
+### `inputmode="numeric"` について
+
+- **`inputmode` は「ソフトウェアキーボードをどんなものに寄せるか」のヒント**です（主にスマホやタブレットで効きやすい）。仕様上は [HTML の `inputmode`](https://html.spec.whatwg.org/multipage/interaction.html#input-modalities:-the-inputmode-attribute) に沿ったモダリティの提案になります。
+- **`numeric` は数字入力に適したキーボード（数字だらけのレイアウト）を出しやすくするための値**です。TODO の ID のように **数値だけ打ちたい** 場面向けの UX 改善です。
+- **注意**: `inputmode` は **入力値の検証や「数字以外禁止」をブラウザに強制するものではありません**。PC の物理キーボードではそのまま文字も打てます。実際に「数字だけ許す」処理は **`study.js` 側の `/^\d+$/` チェック**で行っています。
+- `type="number"` とは別物です。`type="number"` は増減 UI や値の解釈など挙動が変わることがあるため、このページでは **`type="text"` のまま `inputmode` でキーボードだけ寄せる** という割り切りにしています。
+
+### `autocomplete` について
+
+- **`autocomplete` は、ブラウザの自動補完・過去入力の提案をどう扱うかを指示する属性**です。[仕様では様々なトークン](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#attr-fe-autocomplete)があり、「名前」「住所」など意味のある値もあります。
+- ここでは **`autocomplete="off"`** としているので、**この入力欄では自動補完を無効にしたい**、という意図です。
+- **狙いの例**
+  - API を試すたびに **別の ID を打ちたい** のに、ブラウザが過去の値をポップアップさせて邪魔になるのを減らす。
+  - この項目が **住所やログイン情報のような「保存候補」として誤認識されない** ようにする（完全ではないがヒントになる）。
+- **補足**: ブラウザやログインフォームまわりによっては `off` でも一部の提案が残ることがあります。その場合は `autocomplete="one-time-code"` のような別トークンを検討する事例もありますが、学習用の単純な ID 入力では **`off` で十分なことが多い**です。
+
+### 同じ行にあるほかの属性（簡単に）
+
+- **`placeholder="例: 5"`**: 未入力時の薄いヒント文言。**ラベルの代替にはならない**（アクセシビリティ上は `label` が本体）。
+- **`maxlength="10"`**: 入力できる文字数の上限。極端に長い文字列を貼られないようにするための軽いガード。
 
 ## `defer` とスクリプトの順序（`study.html` コメントより）
 

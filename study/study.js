@@ -324,3 +324,71 @@ async function loadData10() {
     }
 
 }
+
+
+
+// ⑪ 入力値を todos/{id} に載せて GET（async + axios）
+const todoIdInput = document.getElementById('todoIdInput');
+
+document.getElementById('btn11').addEventListener('click', loadData11);
+
+todoIdInput.addEventListener('keydown', function(event) {
+
+    if (event.key === 'Enter') {
+
+        loadData11();
+
+    }
+
+});
+
+async function loadData11() {
+
+    const raw = todoIdInput.value.trim();
+
+    if (raw === '') {
+
+        result.textContent =
+            '⑪ 入力 + async + axios\n\n' +
+            'TODO の ID を入力してください（例: 1）';
+
+        return;
+
+    }
+
+    if (!/^\d+$/.test(raw)) {
+
+        result.textContent =
+            '⑪ 入力 + async + axios\n\n' +
+            '`todos/` の後ろには数字の ID だけ入れます（パスを安全にするため）';
+
+        return;
+
+    }
+
+    const url =
+        'https://jsonplaceholder.typicode.com/todos/' + raw;
+
+    try {
+
+        const response = await axios.get(url);
+
+        console.log('⑪', response.data);
+
+        result.textContent =
+            '⑪ 入力 + async + axios\n' +
+            'GET ' + url + '\n\n' +
+            JSON.stringify(response.data, null, 2);
+
+    } catch(error) {
+
+        console.error(error);
+
+        result.textContent =
+            '⑪ 入力 + async + axios\n' +
+            'GET ' + url + '\n\n' +
+            'エラー: ' + error.message;
+
+    }
+
+}

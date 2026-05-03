@@ -4,3 +4,15 @@
     white-space: pre-wrap;
     font-family: ui-monospace, monospace, sans-serif;
 }
+
+.study-row11 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.35rem;
+}
+
+.study-row11 label code {
+    font-size: inherit;
+}
