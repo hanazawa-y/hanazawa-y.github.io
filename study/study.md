@@ -25,7 +25,7 @@
 | `btn9` | ⑨ innerHTML + async + axios | `axios` で TODO を複数件取得し、`innerHTML` で `<ul>` 一覧表示 |
 | `btn10` | ⑩ createElement + async + axios | 同じく複数件取得し、`createElement` / `appendChild` で `<ul>` を組み立てる |
 | `btn11` | ⑪ 入力 + async + axios | 入力欄の値を `todos/{id}` の `{id}` にして `axios.get`（数字 ID のみ）。通信中は入力 `readOnly`・ボタン `disabled` |
-| `uiStateDemo` | ⑫ 状態の切り替え（`select`） | ⑪と同じ `#todoIdInput` / `#btn11` に対し、`readonly` / `disabled` / なしを切り替えて挙動を比較 |
+| `uiStateDemo` | ⑫ 状態の切り替え（`select`） | `#studyRow11`（入力＋⑪ボタンの行）に対し、`readonly` / `disabled` / **`display: none`** などを切り替えて比較 |
 
 ## API
 
@@ -39,10 +39,12 @@
 該当はおおむね次の形です。
 
 ```html
+<div class="study-row11" id="studyRow11">
 <label for="todoIdInput"><code>todos/</code></label>
 <input type="text" id="todoIdInput" inputmode="numeric" placeholder="例: 5" autocomplete="off" maxlength="10">
 <button type="button" id="btn11">⑪ 入力 + async + axios</button>
-<!-- 直下に ⑫ の <select id="uiStateDemo"> で readonly / disabled を切り替え -->
+</div>
+<!-- 直下に ⑫ の <select id="uiStateDemo"> で readonly / disabled / display:none を切り替え -->
 ```
 
 ### `label` の `for` は何のためか
@@ -75,14 +77,20 @@
 - **`placeholder="例: 5"`**: 未入力時の薄いヒント文言。**ラベルの代替にはならない**（アクセシビリティ上は `label` が本体）。
 - **`maxlength="10"`**: 入力できる文字数の上限。極端に長い文字列を貼られないようにするための軽いガード。
 
-## ⑫ `disabled` / `readonly` / `:active` / なし（なにがちがうか）
+## ⑫ `disabled` / `readonly` / `:active` / `default` / `display:none`（なにがちがうか）
 
-このページでは **HTML 属性の「無効・読み取り専用」** と **CSS の「押しているあいだ」** を次のように使い分けています。
+このページでは **HTML 属性の「無効・読み取り専用」** と **CSS の非表示・`:active`** を次のように使い分けています。
 
-### なし（通常）
+### `default`（通常・表示）
 
-- **`readonly` も `disabled` も付けない**状態。入力も⑪ボタンも普通に使える。
-- ⑫の `<select>` の「なし（どちらも通常）」がこれに相当（`applyStudyRow11ChromeState` で属性をいったん外す）。
+- **`readonly` も `disabled` も付けない**状態。入力も⑪ボタンも普通に使える。**⑪の行（`#studyRow11`）は表示**される。
+- ⑫の `<select>` の「通常（表示・readonly/disabled なし）」がこれに相当。値は **`default`**（CSS の `display: none` の **`none` と混ぜない**ため、`none` という値は使わない）。
+
+### `display:none`（⑫で選ぶと）
+
+- **`#studyRow11` にインラインで `style.display = 'none'`** を付け、**入力・⑪ボタンごと行ごとレイアウトから消す**デモ。
+- **見た目の非表示**であり、`readonly` / `disabled` とは別の話。別のモードに切り替えると `display` を外して再表示する。
+- この状態では⑪は実行できず、`#result` に説明を出す。
 
 ### `readonly`（入力）
 
@@ -102,7 +110,7 @@
 
 ### ⑪と⑫の連携
 
-- ⑫で「入力 readonly」「入力 disabled」「⑪ボタンだけ disabled」「両方ロック」を選ぶと、**⑪の API 呼び出しができるか／入力できるか**が変わるので手で試せる。
+- ⑫で「入力 readonly」「入力 disabled」「⑪ボタンだけ disabled」「両方ロック」「**display:none**」を選ぶと、**⑪の API 呼び出しができるか／入力できるか／行が見えるか**が変わるので手で試せる。
 - ⑪実行中は **二重送信防止** のため `loadData11InFlight` フラグを立て、入力 **readonly**・**ボタン disabled**。完了後は **⑫の選択どおり** に `applyStudyRow11ChromeState()` で戻す。
 
 ## `<button>` の `type`（基本は書いておく）

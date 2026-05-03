@@ -328,7 +328,8 @@ async function loadData10() {
 
 
 // ⑪ 入力値を todos/{id} に載せて GET（async + axios）
-// ⑫ で readonly / disabled / なし を切り替え。通信中は一時的に入力 readonly・ボタン disabled。
+// ⑫ で readonly / disabled / display:none などを切り替え。通信中は一時的に入力 readonly・ボタン disabled。
+const studyRow11 = document.getElementById('studyRow11');
 const todoIdInput = document.getElementById('todoIdInput');
 const btn11 = document.getElementById('btn11');
 const uiStateDemo = document.getElementById('uiStateDemo');
@@ -349,6 +350,24 @@ function applyStudyRow11ChromeState() {
     todoIdInput.disabled = false;
     btn11.disabled = false;
 
+    if (studyRow11) {
+
+        studyRow11.style.removeProperty('display');
+
+    }
+
+    if (mode === 'display-none') {
+
+        if (studyRow11) {
+
+            studyRow11.style.display = 'none';
+
+        }
+
+        return;
+
+    }
+
     switch (mode) {
 
         case 'input-readonly':
@@ -368,11 +387,23 @@ function applyStudyRow11ChromeState() {
             btn11.disabled = true;
             break;
 
-        case 'none':
+        case 'default':
         default:
             break;
 
     }
+
+}
+
+function isStudyRow11Hidden() {
+
+    if (!studyRow11) {
+
+        return false;
+
+    }
+
+    return window.getComputedStyle(studyRow11).display === 'none';
 
 }
 
@@ -393,6 +424,16 @@ todoIdInput.addEventListener('keydown', function(event) {
 async function loadData11() {
 
     if (loadData11InFlight) {
+
+        return;
+
+    }
+
+    if (isStudyRow11Hidden()) {
+
+        result.textContent =
+            '⑪ 入力 + async + axios\n\n' +
+            '⑪の行が `display: none` で非表示のため実行できません（⑫で「通常」に戻してください）';
 
         return;
 
