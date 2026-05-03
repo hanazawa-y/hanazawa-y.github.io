@@ -213,3 +213,114 @@ async function loadData8() {
     }
 
 }
+
+
+
+// ⑨ innerHTML + async + axios（一覧表示）
+document.getElementById('btn9').addEventListener('click', loadData9);
+
+async function loadData9() {
+
+    try {
+
+        const response = await axios.get(
+            'https://jsonplaceholder.typicode.com/todos?_limit=10'
+        );
+
+        const todos = response.data;
+
+        console.log('⑨', todos);
+
+        const itemsHtml = todos.map(function(todo) {
+
+            const titleSafe = String(todo.title)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+
+            const status = todo.completed ? '完了' : '未完了';
+
+            return (
+                '<li>' +
+                    '<strong>#' + todo.id + '</strong> ' +
+                    titleSafe +
+                    ' <span>(' + status + ')</span>' +
+                '</li>'
+            );
+
+        }).join('');
+
+        result.innerHTML =
+            '<p>⑨ innerHTML + async + axios</p>' +
+            '<ul>' + itemsHtml + '</ul>';
+
+    } catch(error) {
+
+        console.error(error);
+
+        result.textContent =
+            '⑨ innerHTML + async + axios\n\n' +
+            'エラー: ' + error.message;
+
+    }
+
+}
+
+
+
+// ⑩ createElement + async + axios（一覧表示）
+document.getElementById('btn10').addEventListener('click', loadData10);
+
+async function loadData10() {
+
+    try {
+
+        const response = await axios.get(
+            'https://jsonplaceholder.typicode.com/todos?_limit=10'
+        );
+
+        const todos = response.data;
+
+        console.log('⑩', todos);
+
+        result.replaceChildren();
+
+        const caption = document.createElement('p');
+        caption.textContent = '⑩ createElement + async + axios';
+        result.appendChild(caption);
+
+        const ul = document.createElement('ul');
+
+        todos.forEach(function(todo) {
+
+            const li = document.createElement('li');
+
+            const strong = document.createElement('strong');
+            strong.textContent = '#' + todo.id;
+            li.appendChild(strong);
+
+            li.appendChild(document.createTextNode(' ' + todo.title + ' '));
+
+            const status = document.createElement('span');
+            status.textContent =
+                '(' + (todo.completed ? '完了' : '未完了') + ')';
+            li.appendChild(status);
+
+            ul.appendChild(li);
+
+        });
+
+        result.appendChild(ul);
+
+    } catch(error) {
+
+        console.error(error);
+
+        result.textContent =
+            '⑩ createElement + async + axios\n\n' +
+            'エラー: ' + error.message;
+
+    }
+
+}

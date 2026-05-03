@@ -4,32 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>study history here</title>
-
-    <!--
-        defer を付ける理由
-
-        通常、head内のscriptは
-        HTML読み込み途中で即実行される。
-
-        その時点では body の button がまだ存在しないので、
-
-        document.getElementById('btn1')
-
-        が null になることがある。
-
-        defer を付けると、
-        HTMLを最後まで読んでからJS実行される。
-
-        さらに、
-        上から順番に実行されるので
-
-        axios
-        ↓
-        study.js
-
-        の順も保証される。
-    -->
-
+    <link rel="stylesheet" href="study.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" defer></script>
     <script src="study.js" defer></script>
 
@@ -45,24 +20,12 @@
     <button id="btn6">⑥ async関数を別定義</button>
     <button id="btn7">⑦ axios</button>
     <button id="btn8">⑧ async + axios</button>
-
-    <!--
-        script を body の最後に置く書き方もよくある。
-
-        理由：
-        buttonなどHTML生成後にJS実行できるから。
-
-        つまり defer が無くても安全。
-
-        例：
-
-        <script src="study.js"></script>
-
-        をここ(body最後)に置く。
-    -->
+    <button id="btn9">⑨ innerHTML + async + axios</button>
+    <button id="btn10">⑩ createElement + async + axios</button>
+    
 	<hr>
 
-	<pre id="result"></pre>
+	<div id="result"></div>
 </body>
 
 </html>

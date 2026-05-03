@@ -1,3 +1,6 @@
 @charset "UTF-8";
 
-
+#result {
+    white-space: pre-wrap;
+    font-family: ui-monospace, monospace, sans-serif;
+}
