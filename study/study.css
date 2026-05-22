@@ -1,0 +1,180 @@
+@charset "UTF-8";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+    background: #0f172a;
+    color: white;
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+.study-background {
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(circle at top left,
+            rgba(59, 130, 246, 0.18),
+            transparent 35%),
+        radial-gradient(circle at bottom right,
+            rgba(168, 85, 247, 0.18),
+            transparent 35%);
+    z-index: -1;
+}
+
+.study-wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 32px 20px 64px;
+}
+
+.study-header {
+    margin-bottom: 28px;
+}
+
+.study-header h1 {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.study-header p {
+    opacity: 0.75;
+    font-size: 14px;
+}
+
+.study-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 28px;
+}
+
+.study-nav a {
+    padding: 8px 16px;
+    border-radius: 999px;
+    text-decoration: none;
+    color: white;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.study-nav a:hover,
+.study-nav a.active {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    border-color: transparent;
+}
+
+.study-note {
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.study-note code {
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.25);
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 13px;
+}
+
+.study-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.study-buttons button {
+    padding: 10px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.06);
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.study-buttons button:hover {
+    background: rgba(59, 130, 246, 0.25);
+    border-color: rgba(59, 130, 246, 0.5);
+}
+
+#result {
+    padding: 20px;
+    border-radius: 16px;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    overflow-x: auto;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 13px;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    min-height: 120px;
+}
+
+.study-hub-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.study-hub-card {
+    display: block;
+    padding: 24px;
+    border-radius: 18px;
+    text-decoration: none;
+    color: white;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: 0.25s;
+}
+
+.study-hub-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(59, 130, 246, 0.4);
+    background: rgba(255, 255, 255, 0.09);
+}
+
+.study-hub-card h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.study-hub-card p {
+    font-size: 14px;
+    opacity: 0.75;
+}
+
+.study-hub-card .tag {
+    display: inline-block;
+    margin-top: 14px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    background: rgba(59, 130, 246, 0.2);
+}
+
+.study-hub-card.java .tag {
+    background: rgba(234, 88, 12, 0.25);
+}
+
+.study-hub-card.php .tag {
+    background: rgba(147, 51, 234, 0.25);
+}
+
+.study-hub-card.three .tag {
+    background: rgba(34, 197, 94, 0.25);
+}

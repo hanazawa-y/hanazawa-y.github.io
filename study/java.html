@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Study</title>
+    <link rel="stylesheet" href="study.css">
+    <script type="module" src="./java.js"></script>
+</head>
+
+<body>
+
+    <div class="study-background"></div>
+    <div class="study-wrap">
+
+        <header class="study-header">
+            <h1>Java Study</h1>
+            <p>よく使う文法・API のパターン集</p>
+        </header>
+
+        <nav class="study-nav">
+            <a href="index.html">一覧</a>
+            <a href="study.html">JavaScript</a>
+            <a href="java.html" class="active">Java</a>
+            <a href="php.html">PHP</a>
+            <a href="../monster/">Three.js</a>
+            <a href="../index.html">トップ</a>
+        </nav>
+
+        <p class="study-note">
+            ブラウザでは Java は実行できないため、コード例と想定出力のみ表示します。実行は IDE や <code>java Main.java</code> で確認してください。
+        </p>
+
+        <div class="study-buttons">
+            <button id="btn1">① クラス + コンストラクタ</button>
+            <button id="btn2">② interface + 実装</button>
+            <button id="btn3">③ Stream map / filter</button>
+            <button id="btn4">④ Optional</button>
+            <button id="btn5">⑤ try-with-resources</button>
+            <button id="btn6">⑥ record</button>
+            <button id="btn7">⑦ lambda</button>
+            <button id="btn8">⑧ Map getOrDefault</button>
+        </div>
+
+        <pre id="result">ボタンを押すとコード例が表示されます。</pre>
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP Study</title>
+    <link rel="stylesheet" href="study.css">
+    <script type="module" src="./php.js"></script>
+</head>
+
+<body>
+
+    <div class="study-background"></div>
+    <div class="study-wrap">
+
+        <header class="study-header">
+            <h1>PHP Study</h1>
+            <p>配列・クラス・DB まわりのパターン集</p>
+        </header>
+
+        <nav class="study-nav">
+            <a href="index.html">一覧</a>
+            <a href="study.html">JavaScript</a>
+            <a href="java.html">Java</a>
+            <a href="php.html" class="active">PHP</a>
+            <a href="../monster/">Three.js</a>
+            <a href="../index.html">トップ</a>
+        </nav>
+
+        <p class="study-note">
+            静的ページのため PHP は実行しません。ローカルやサーバーで <code>php sample.php</code> して動作確認してください。
+        </p>
+
+        <div class="study-buttons">
+            <button id="btn1">① 変数・配列</button>
+            <button id="btn2">② 連想配列</button>
+            <button id="btn3">③ 関数</button>
+            <button id="btn4">④ クラス</button>
+            <button id="btn5">⑤ try-catch</button>
+            <button id="btn6">⑥ ?? / ?:</button>
+            <button id="btn7">⑦ 名前付き引数</button>
+            <button id="btn8">⑧ PDO 風</button>
+        </div>
+
+        <pre id="result">ボタンを押すとコード例が表示されます。</pre>
+
+    </div>
+
+</body>
+
+</html>
