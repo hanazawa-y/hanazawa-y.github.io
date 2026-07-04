@@ -18,8 +18,6 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment:
-      name: LOGIN_SUCCESS_ID
 
     steps:
       - name: Checkout
@@ -36,11 +34,6 @@ jobs:
 
       - name: Build
         run: npm run build
-        env:
-          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL || secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY || secrets.VITE_SUPABASE_ANON_KEY }}
-          VITE_LOGIN_ID: ${{ vars.VITE_LOGIN_ID || secrets.VITE_LOGIN_ID }}
-          LOGIN_SUCCESS_ID: ${{ vars.LOGIN_SUCCESS_ID || secrets.LOGIN_SUCCESS_ID }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

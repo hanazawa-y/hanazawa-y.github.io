@@ -1,5 +1,3 @@
-import "../src/authGuard.js";
-
 // レスポンス表示用
 const result = document.getElementById('result');
 

@@ -1,0 +1,101 @@
+{
+  "documentTitle": "hanazawa-y",
+  "hero": {
+    "eyebrow": "SOFTWARE ENGINEER",
+    "name": "hanazawa-y",
+    "text": "Java / Spring Boot / Next.js / AWS",
+    "links": [
+      {
+        "href": "https://github.com/hanazawa-y",
+        "label": "GitHub",
+        "target": "_blank"
+      }
+    ]
+  },
+  "sections": [
+    {
+      "type": "paragraphs",
+      "title": "Profile",
+      "paragraphs": [
+        "Webシステム開発を中心に、Java・Spring Bootを用いたバックエンド開発、JavaScript / TypeScript を用いたフロントエンド開発に従事しています。",
+        "保守・改修だけでなく、不具合調査や品質改善対応など、安定したシステム運用を意識した開発を行っています。"
+      ]
+    },
+    {
+      "type": "skills",
+      "title": "Skills",
+      "groups": [
+        {
+          "title": "Language",
+          "items": [
+            "Java",
+            "JavaScript",
+            "TypeScript",
+            "HTML / CSS"
+          ]
+        },
+        {
+          "title": "Framework",
+          "items": [
+            "Spring Boot",
+            "Struts",
+            "Next.js"
+          ]
+        },
+        {
+          "title": "Database",
+          "items": [
+            "MySQL",
+            "SQL Server"
+          ]
+        },
+        {
+          "title": "AWS",
+          "items": [
+            "EC2",
+            "S3",
+            "Lambda",
+            "RDS"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "experience",
+      "title": "Experience",
+      "items": [
+        {
+          "title": "System Engineer",
+          "period": "2024.04 - Present",
+          "details": [
+            "Javaを用いたシステムの開発・改修",
+            "Java / TypeScript を用いた社内システム開発",
+            "Web入会システム開発・運用",
+            "Webシステムの機能改善・品質向上対応",
+            "不具合調査、保守運用対応"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "certifications",
+      "title": "Certification",
+      "items": [
+        "AWS Certified Developer - Associate",
+        "AWS Certified Solutions Architect - Associate",
+        "基本情報技術者試験"
+      ]
+    },
+    {
+      "type": "links",
+      "title": "勉強用",
+      "description": "JavaScript / Java / PHP / Three.js のメモ",
+      "links": [
+        {
+          "href": "./study/index.html",
+          "label": "Study"
+        }
+      ]
+    }
+  ]
+}

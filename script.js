@@ -1,24 +1,7 @@
-import "./src/authGuard.js";
-import { supabase } from "./src/supabaseClient.js";
+import homeContent from "./content/home.json";
 
-const content = await loadHomeContent();
-
-renderHomeContent(content);
+renderHomeContent(homeContent);
 observeCards();
-
-async function loadHomeContent() {
-    const { data, error } = await supabase
-        .from("site_contents")
-        .select("content")
-        .eq("id", "home")
-        .single();
-
-    if (error) {
-        throw new Error("Failed to load home content: " + error.message);
-    }
-
-    return data.content;
-}
 
 function renderHomeContent(content) {
     document.title = content.documentTitle || document.title;

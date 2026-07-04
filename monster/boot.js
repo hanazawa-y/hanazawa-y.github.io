@@ -1,5 +1,3 @@
-import "../src/authGuard.js";
-
 import("./main.js").catch((err) => {
 
 	const el =

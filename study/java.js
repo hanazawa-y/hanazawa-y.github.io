@@ -1,5 +1,3 @@
-import "../src/authGuard.js";
-
 const result = document.getElementById('result');
 
 const samples = {
