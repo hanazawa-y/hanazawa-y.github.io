@@ -10,8 +10,6 @@ function renderHomeContent(content) {
         content.hero?.eyebrow || "";
     document.getElementById("heroName").textContent =
         content.hero?.name || "";
-    document.getElementById("heroText").textContent =
-        content.hero?.text || "";
 
     renderLinks(
         document.getElementById("heroLinks"),
@@ -26,7 +24,7 @@ function renderHomeContent(content) {
 
 function createSection(section) {
     const card = document.createElement("section");
-    card.className = "card fade-in";
+    card.className = "card fade-in show";
 
     const title = document.createElement("h2");
     title.textContent = section.title || "";

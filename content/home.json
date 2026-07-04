@@ -3,7 +3,6 @@
   "hero": {
     "eyebrow": "SOFTWARE ENGINEER",
     "name": "hanazawa-y",
-    "text": "Java / Spring Boot / Next.js / AWS",
     "links": [
       {
         "href": "https://github.com/hanazawa-y",
@@ -31,7 +30,8 @@
             "Java",
             "JavaScript",
             "TypeScript",
-            "HTML / CSS"
+            "HTML",
+            "CSS"
           ]
         },
         {
@@ -56,6 +56,60 @@
             "S3",
             "Lambda",
             "RDS"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "skills",
+      "title": "開発環境",
+      "groups": [
+        {
+          "title": "言語",
+          "items": [
+            "Java",
+            "TypeScript",
+            "JavaScript",
+            "HTML",
+            "CSS"
+          ]
+        },
+        {
+          "title": "DB",
+          "items": [
+            "MySQL",
+            "SQL Server"
+          ]
+        },
+        {
+          "title": "OS",
+          "items": [
+            "Windows",
+            "Linux"
+          ]
+        },
+        {
+          "title": "フレームワーク",
+          "items": [
+            "Spring Boot",
+            "Struts",
+            "Next.js"
+          ]
+        },
+        {
+          "title": "クラウド",
+          "items": [
+            "AWS（EC2 / S3 / Lambda / RDS など）"
+          ]
+        },
+        {
+          "title": "ツール",
+          "items": [
+            "GitHub",
+            "Eclipse",
+            "VS Code",
+            "Cursor",
+            "Cloud Code"
           ]
         }
       ]
@@ -88,12 +142,12 @@
     },
     {
       "type": "links",
-      "title": "勉強用",
-      "description": "JavaScript / Java / PHP / Three.js のメモ",
+      "title": "Technical Notes",
+      "description": "JavaScript / Java / PHP / Three.js など、個人用のメモとサンプルです。",
       "links": [
         {
           "href": "./study/index.html",
-          "label": "Study"
+          "label": "Technical Notes"
         }
       ]
     }

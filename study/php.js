@@ -73,7 +73,7 @@ try {
         output: '例外時はログ出力して空配列で続行'
     },
     btn6: {
-        title: '⑥ ?? / ?:',
+        title: '⑥ ?? / 三項演算子',
         code: `<?php
 $nickname = $_GET['nick'] ?? 'guest';
 $level = $score > 80 ? 'A' : 'B';
@@ -121,7 +121,7 @@ function showSample(key) {
     result.textContent =
         sample.title + '\n\n' +
         sample.code + '\n\n' +
-        '--- 想定出力 / メモ ---\n' +
+        '--- 想定出力 / 補足 ---\n' +
         sample.output;
 
     console.log(sample.title, sample);

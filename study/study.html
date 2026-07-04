@@ -3,84 +3,75 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>study history here</title>
-
-    <!--
-        defer を付ける理由
-
-        通常、head内のscriptは
-        HTML読み込み途中で即実行される。
-
-        その時点では body の button がまだ存在しないので、
-
-        document.getElementById('btn1')
-
-        が null になることがある。
-
-        defer を付けると、
-        HTMLを最後まで読んでからJS実行される。
-
-        さらに、
-        上から順番に実行されるので
-
-        axios
-        ↓
-        study.js
-
-        の順も保証される。
-    -->
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript — Technical Notes</title>
+    <link rel="stylesheet" href="study.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" defer></script>
     <script type="module" src="./study.js"></script>
-
 </head>
 
 <body>
 
-    <button id="btn1">① function + then</button>
-    <button id="btn2">② arrow + then</button>
-    <button id="btn3">③ function + async</button>
-    <button id="btn4">④ arrow + async</button>
-    <button id="btn5">⑤ 名前付き関数</button>
-    <button id="btn6">⑥ async関数を別定義</button>
-    <button id="btn7">⑦ axios</button>
-    <button id="btn8">⑧ async + axios</button>
-    <button id="btn9">⑨ innerHTML + async + axios</button>
-    <button id="btn10">⑩ createElement + async + axios</button>
+    <div class="study-background"></div>
+    <div class="study-wrap">
 
-    <div id="studyRow11">
-        <label for="todoIdInput"><code>todos/</code></label>
-        <input type="text" id="todoIdInput" inputmode="numeric" placeholder="例: 5" autocomplete="off" maxlength="10">
-        <button type="button" id="btn11">⑪ 入力 + async + axios</button>
+        <header class="study-header">
+            <h1>JavaScript</h1>
+            <p>非同期通信（fetch / async / axios）の実装パターン比較</p>
+        </header>
+
+        <a href="../index.html" class="study-back">← 戻る</a>
+
+        <nav class="study-nav">
+            <a href="index.html">一覧</a>
+            <a href="study.html" class="active">JavaScript</a>
+            <a href="java.html">Java</a>
+            <a href="php.html">PHP</a>
+            <a href="../monster/">Three.js</a>
+        </nav>
+
+        <p class="study-note">
+            <a href="https://jsonplaceholder.typicode.com/" target="_blank" rel="noopener noreferrer">JSONPlaceholder</a>
+            の公開 API を使用し、ブラウザ上でリクエストとレスポンスを確認できます。
+        </p>
+
+        <div class="study-buttons">
+            <button id="btn1">① function + then</button>
+            <button id="btn2">② arrow + then</button>
+            <button id="btn3">③ function + async</button>
+            <button id="btn4">④ arrow + async</button>
+            <button id="btn5">⑤ 名前付き関数</button>
+            <button id="btn6">⑥ async 関数を別定義</button>
+            <button id="btn7">⑦ axios</button>
+            <button id="btn8">⑧ async + axios</button>
+            <button id="btn9">⑨ innerHTML + async + axios</button>
+            <button id="btn10">⑩ createElement + async + axios</button>
+        </div>
+
+        <div class="study-panel">
+            <div class="study-row11" id="studyRow11">
+                <label for="todoIdInput"><code>todos/</code></label>
+                <input type="text" id="todoIdInput" inputmode="numeric" placeholder="例: 5" autocomplete="off" maxlength="10">
+                <button type="button" id="btn11">⑪ 入力値 + async + axios</button>
+            </div>
+
+            <div class="study-controls">
+                <label for="uiStateDemo">UI 状態の切り替え（検証用）</label>
+                <select id="uiStateDemo">
+                    <option value="default">通常</option>
+                    <option value="input-readonly">入力 readonly</option>
+                    <option value="input-disabled">入力 disabled</option>
+                    <option value="button-disabled">ボタン disabled</option>
+                    <option value="both-lock">入力 readonly + ボタン disabled</option>
+                    <option value="display-none">行を display:none</option>
+                </select>
+            </div>
+        </div>
+
+        <pre id="result">項目を選択すると、実行結果または API レスポンスを表示します。</pre>
+
     </div>
 
-    <label for="uiStateDemo">⑫ ⑪の状態切り替え</label>
-    <select id="uiStateDemo">
-        <option value="default">通常</option>
-        <option value="input-readonly">入力 readonly</option>
-        <option value="input-disabled">入力 disabled</option>
-        <option value="button-disabled">⑪ボタン disabled</option>
-        <option value="both-lock">入力 readonly + ⑪ボタン disabled</option>
-        <option value="display-none">⑪の行を display:none</option>
-    </select>
-
-    <!--
-        script を body の最後に置く書き方もよくある。
-
-        理由：
-        buttonなどHTML生成後にJS実行できるから。
-
-        つまり defer が無くても安全。
-
-        例：
-
-        <script src="study.js"></script>
-
-        をここ(body最後)に置く。
-    -->
-	<hr>
-
-	<pre id="result"></pre>
 </body>
 
 </html>

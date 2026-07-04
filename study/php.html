@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PHP Study</title>
+    <title>PHP — Technical Notes</title>
     <link rel="stylesheet" href="study.css">
     <script type="module" src="./php.js"></script>
 </head>
@@ -15,9 +15,11 @@
     <div class="study-wrap">
 
         <header class="study-header">
-            <h1>PHP Study</h1>
-            <p>配列・クラス・DB まわりのパターン集</p>
+            <h1>PHP</h1>
+            <p>配列・クラス・DB まわりの実装例</p>
         </header>
+
+        <a href="../index.html" class="study-back">← 戻る</a>
 
         <nav class="study-nav">
             <a href="index.html">一覧</a>
@@ -25,11 +27,10 @@
             <a href="java.html">Java</a>
             <a href="php.html" class="active">PHP</a>
             <a href="../monster/">Three.js</a>
-            <a href="../index.html">トップ</a>
         </nav>
 
         <p class="study-note">
-            静的ページのため PHP は実行しません。ローカルやサーバーで <code>php sample.php</code> して動作確認してください。
+            静的サイトのため PHP は実行しません。ローカル環境やサーバーで <code>php sample.php</code> として動作確認してください。
         </p>
 
         <div class="study-buttons">
@@ -38,12 +39,12 @@
             <button id="btn3">③ 関数</button>
             <button id="btn4">④ クラス</button>
             <button id="btn5">⑤ try-catch</button>
-            <button id="btn6">⑥ ?? / ?:</button>
+            <button id="btn6">⑥ ?? / 三項演算子</button>
             <button id="btn7">⑦ 名前付き引数</button>
             <button id="btn8">⑧ PDO 風</button>
         </div>
 
-        <pre id="result">ボタンを押すとコード例が表示されます。</pre>
+        <pre id="result">各項目を選択すると、コード例と想定される出力を表示します。</pre>
 
     </div>
 
