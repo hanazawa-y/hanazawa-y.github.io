@@ -21,14 +21,17 @@ function resolveModelUrl() {
 
 	const q = params.get("model");
 
-	const scriptBase =
-		import.meta.url;
+	// public/Monster.glb はサイト直下 /Monster.glb として配信される。
+	// import.meta.url（JSバンドルパス）基準だと Vite ビルド後にずれるため、
+	// ページ URL 基準で解決する。
+	const pageBase =
+		window.location.href;
 
 	if (!q) {
 
 		return new URL(
 			"../Monster.glb",
-			scriptBase
+			pageBase
 		).href;
 	}
 
@@ -40,7 +43,7 @@ function resolveModelUrl() {
 
 		return new URL(
 			q,
-			window.location.href
+			pageBase
 		).href;
 	}
 
@@ -51,7 +54,7 @@ function resolveModelUrl() {
 
 	return new URL(
 		relative,
-		scriptBase
+		pageBase
 	).href;
 }
 
